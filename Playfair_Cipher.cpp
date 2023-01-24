@@ -176,7 +176,7 @@ int main()
     //Start the cipher with the cipher table and plain text
     
     //Puts an 'X' between characters that are repeated in the plain text
-    for (int i = 0; i < plain.size() - 1; i++)
+    for (int i = 0; i < plain.size() - 1; i += 2)
     {
         if (plain[i] == plain[i + 1])
         {
