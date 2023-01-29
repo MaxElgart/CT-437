@@ -17,8 +17,6 @@ int main()
     
     std::vector<int> ans(iterations);
     
-    int clocking_1 = 0;
-    int clocking_2 = 0;
     int b1_xor = 0;
     int b2_xor = 0;
     
