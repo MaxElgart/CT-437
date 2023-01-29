@@ -17,32 +17,19 @@ int main()
     std::vector<int> ans(iterations);
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
     
-    // Creates random binary strings with a coin flip for each bit for 5 binary strings
-    for (int j = 0; j < 32; j++)
-    {
-        b1[j] = std::rand() % 2;
-    }
     
-    for (int j = 0; j < 32; j++)
-    {
-        b2[j] = std::rand() % 2;
-    }
-    
-    for (int j = 0; j < 32; j++)
-    {
-        b3[j] = std::rand() % 2;
-    }
-    
-    for (int j = 0; j < 32; j++)
-    {
-        b4[j] = std::rand() % 2;
-    }
-    
-    for (int j = 0; j < 32; j++)
-    {
-        b5[j] = std::rand() % 2;
-    }
-    
+    // Creates random binary strings with a coin flip for each bit
+     std::vector<std::bitset<32> > binary_strings;
+     std::bitset<32> b;
+     for(int i = 0; i < 5; i++)
+     {
+        for (int j = 0; j < 32; j++)
+        {
+            b[j] = std::rand() % 2;
+        }
+        binary_strings.push_back(b);
+     }
+
     int ones_count = 0;
     int zeros_count = 0;
     int prev = 0;
@@ -52,16 +39,17 @@ int main()
     int run_4 = 0;
     int run_5 = 0;
     int run_6 = 0;
+    std::vector<int> b_xor;
+    b_xor.reserve(5);
+    //Preprocess 1st iteration so that we can do runs and everything in the same loop
+    b_xor[0] = binary_strings[0][15] ^ binary_strings[0][28] ^ binary_strings[0][3];
+    b_xor[1] = binary_strings[1][30] ^ binary_strings[1][16] ^ binary_strings[1][5];
+    b_xor[2] = binary_strings[2][12] ^ binary_strings[2][17] ^ binary_strings[2][2];
+    b_xor[3] = binary_strings[3][31] ^ binary_strings[3][23] ^ binary_strings[3][8];
+    b_xor[4] = binary_strings[4][7] ^ binary_strings[4][1] ^ binary_strings[4][10];
     
     //Preprocess 1st iteration so that we can do runs and everything in the same loop
-    int b1_xor = b1[15] ^ b1[28] ^ b1[3];
-    int b2_xor = b2[30] ^ b2[16] ^ b2[5];
-    int b3_xor = b2[12] ^ b2[17] ^ b2[2];
-    int b4_xor = b2[31] ^ b2[23] ^ b2[8];
-    int b5_xor = b2[7] ^ b2[1] ^ b2[10];
-    
-    //Preprocess 1st iteration so that we can do runs and everything in the same loop
-    ans[ans.size() - 1] = b1_xor ^ b2_xor ^ b3_xor ^ b4_xor ^ b5_xor;
+    ans[ans.size() - 1] = b_xor[0] ^ b_xor[1] ^ b_xor[2] ^ b_xor[3] ^ b_xor[4];
     
     //Preprocess 1st iteration so that we can do runs and everything in the same loop
     if (ans[ans.size() - 1] == 1)
@@ -74,31 +62,21 @@ int main()
     }
     
     //Preprocess 1st iteration so that we can do runs and everything in the same loop
-    b1 <<= 1;
-    b1[0] = b1_xor;
+    for (int i = 0; i < 5; i++)
+    {
+        binary_strings[i] <<= 1;
+        binary_strings[i][0] = b_xor[i];
+    }
     
-    b2 <<= 1;
-    b2[0] = b2_xor;
-    
-    b3 <<= 1;
-    b3[0] = b3_xor;
-    
-    b4 <<= 1;
-    b4[0] = b4_xor;
-    
-    b5 <<= 1;
-    b5[0] = b5_xor;
-    
-    //indexing starts at the back so b1[0] for b1 = 11110 returns 0
     for (int i = ans.size() - 2; i >= 0; i--)
     {
-        int b1_xor = b1[15] ^ b1[28] ^ b1[3];
-        int b2_xor = b2[30] ^ b2[16] ^ b2[5];
-        int b3_xor = b2[12] ^ b2[17] ^ b2[2];
-        int b4_xor = b2[31] ^ b2[23] ^ b2[8];
-        int b5_xor = b2[7] ^ b2[1] ^ b2[10];
+        b_xor[0] = binary_strings[0][15] ^ binary_strings[0][28] ^ binary_strings[0][3];
+        b_xor[1] = binary_strings[1][30] ^ binary_strings[1][16] ^ binary_strings[1][5];
+        b_xor[2] = binary_strings[2][12] ^ binary_strings[2][17] ^ binary_strings[2][2];
+        b_xor[3] = binary_strings[3][31] ^ binary_strings[3][23] ^ binary_strings[3][8];
+        b_xor[4] = binary_strings[4][7] ^ binary_strings[4][1] ^ binary_strings[4][10];
         
-        ans[i] = b1_xor ^ b2_xor ^ b3_xor ^ b4_xor ^ b5_xor;
+        ans[i] = b_xor[0] ^ b_xor[1] ^ b_xor[2] ^ b_xor[3] ^ b_xor[4];
         
         // This counts 1's and 0's for test 1
         if (ans[i] == 1)
@@ -146,20 +124,11 @@ int main()
         }
         
         //Pushes all of the binary strings 1 to the left and sets the last index to the xor statement
-        b1 <<= 1;
-        b1[0] = b1_xor;
-        
-        b2 <<= 1;
-        b2[0] = b2_xor;
-        
-        b3 <<= 1;
-        b3[0] = b3_xor;
-        
-        b4 <<= 1;
-        b4[0] = b4_xor;
-        
-        b5 <<= 1;
-        b5[0] = b5_xor;
+        for (int i = 0; i < 5; i++)
+        {
+            binary_strings[i] <<= 1;
+            binary_strings[i][0] = b_xor[i];
+        }
     }
     
     //Checks to see if the run never ended from the last iteration and sees if its the biggest
