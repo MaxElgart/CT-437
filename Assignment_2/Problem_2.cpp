@@ -5,11 +5,6 @@
 
 int main()
 {
-    std::bitset<32> b1;
-    std::bitset<32> b2;
-    std::bitset<32> b3;
-    std::bitset<32> b4;
-    std::bitset<32> b5;
     int iterations = 0;
     std::cout << "How many iterations? ";
     std::cin >> iterations;
