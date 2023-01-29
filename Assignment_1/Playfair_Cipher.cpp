@@ -190,8 +190,6 @@ int main()
         plain.push_back('X');
     }
     
-    //Outputs the plain text with the X's in between repeat letters and at end if plain is not even
-    std::cout << plain << std::endl;
     
     //Make a map that has the x,y cooridinates for characters in the cipher_table so that we know their coordinates for replacing them
     std::map<char, std::pair<int, int> >table_grid;
