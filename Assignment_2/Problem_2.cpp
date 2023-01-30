@@ -1,7 +1,5 @@
 #include <iostream>
-#include <string>
 #include <vector>
-#include <map>
 
 int main()
 {
@@ -14,7 +12,7 @@ int main()
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
     
     
-    // Creates random binary strings with a coin flip for each bit
+    // Creates 5 random 32 bit binary strings with a coin flip for each bit
      std::vector<std::bitset<32> > binary_strings;
      std::bitset<32> b;
      for(int i = 0; i < 5; i++)
