@@ -21,7 +21,7 @@ int main()
     int b1_xor = 0;
     int b2_xor = 0;
     
-    //indexing starts at the back so b1[0] for b1 = 11110 returns 0
+    //Implementation of the ciper without clocking
     for (int i = ans.size() - 1; i >= 0; i--)
     {
         //We will have xor operand (feedback function) for b1 be b1[15] xor b1[28] xor b1[3]

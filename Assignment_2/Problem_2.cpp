@@ -24,16 +24,19 @@ int main()
         binary_strings.push_back(b);
      }
     
-    //Create variables in order to count the amount of 1', 0's, biggest run by both, and the amount of runs of 4, 5, 6
+    //Create variables in order to count the amount of 1', 0's, biggest run by both, and the amount of runs of 4, 5, 6 for both 0's and 1's
     int ones_count = 0;
     int zeros_count = 0;
     int prev = 0;
     int curr_run = 1;
     int biggest_run_1 = 0;
     int biggest_run_0 = 0;
-    int run_4 = 0;
-    int run_5 = 0;
-    int run_6 = 0;
+    int run_4_1 = 0;
+    int run_5_1 = 0;
+    int run_6_1 = 0;
+    int run_4_0 = 0;
+    int run_5_0 = 0;
+    int run_6_0 = 0;
     
     //Create an xor vector to hold the xor values for the feedback functions of all binary strings
     std::vector<int> b_xor;
@@ -108,18 +111,30 @@ int main()
                 biggest_run_0 = curr_run;
             }
             
-            //Checks to see if the run was length 4, 5, 6
-            if (curr_run == 4)
+            //Checks to see if the run was length 4, 5, 6 and if it was a 0 or a 1
+            if (curr_run == 4 && ans[i + 1] == 1)
             {
-                run_4 += 1;
+                run_4_1 += 1;
             }
-            else if(curr_run == 5)
+            else if (curr_run == 4 && ans[i + 1] == 0)
             {
-                run_5 += 1;
+                run_4_0 += 1;
             }
-            else if(curr_run == 6)
+            else if (curr_run == 5 && ans[i + 1] == 1)
             {
-                run_6 += 1;
+                run_5_1 += 1;
+            }
+            else if (curr_run == 5 && ans[i + 1] == 0)
+            {
+                run_5_0 += 1;
+            }
+            else if (curr_run == 6 && ans[i + 1] == 1)
+            {
+                run_6_1 += 1;
+            }
+            else if (curr_run == 6 && ans[i + 1] == 0)
+            {
+                run_6_0 += 1;
             }
             
             //resets run to 1 as the current bit was different than the previous and is starting a new run
@@ -144,14 +159,20 @@ int main()
         biggest_run_0 = curr_run;
     }
     
-    //Test 1
+    //Prints out total number of 1's and 0's in the binary string
     std::cout << "Number of 0's: " << zeros_count << std::endl << "Number of 1's: " << ones_count << std::endl;
     
-    //Test 2
+    //Prints out the longest run of 0's and longest run of 1's
     std::cout << "Longest run of 0's: " << biggest_run_0 << std::endl << "Longest run of 1's: " << biggest_run_1 << std::endl;
     
-    //Test 3
-    std::cout << "Number of 4 runs: " << run_4 << std::endl << "Number of 5 runs: " << run_5 << std::endl << "Number of 6 runs: " << run_6 << std::endl;
+    //Prints out number of runs of 4 for 0's and 1's
+    std::cout << "Number of 4 runs of 0's: " << run_4_0 << std::endl << "Number of 4 runs of 1's: " << run_4_1 << std::endl;
+    
+    //Prints out number of runs of 5 for 0's and 1's
+    std::cout << "Number of 5 runs of 0's: " << run_5_0 << std::endl << "Number of 5 runs of 1's: " << run_5_1 << std::endl;
+    
+    //Prints out number of runs of 6 for 0's and 1's
+    std::cout << "Number of 6 runs of 0's: " << run_6_0 << std::endl << "Number of 6 runs of 1's: " << run_6_1 << std::endl;
     
     return 0;
 }
