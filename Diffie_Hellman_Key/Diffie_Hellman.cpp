@@ -44,7 +44,6 @@ int main()
         }
     } while (check == false);
     
-    int a = 0;
     
     //Create vector for seen mods so that we can find a primitive root
     std::vector<int> seen;
@@ -52,12 +51,26 @@ int main()
     check = true;
     long long primitive_root = 0;
     
+    long long test = 0;
+    std::vector<int> primitive_tests;
     //Gets a primitive root for the prime number
-    for (long long i = 2; i < prime; i++)
+    while(primitive_root == 0)
     {
+        //Picks a random number from 0 to prime-1 then checks if it is a primitive root
+        test = rand() % prime;
+        // While loop to pick a random number if the one picked has already been tested
+        while(std::find(primitive_tests.begin(), primitive_tests.end(), test) != primitive_tests.end())
+        {
+            test = rand() % prime;
+        }
+        
+        //Puts the number we just tested for primitive root into vector of seen primitive tested
+        primitive_tests.push_back(test);
+        
+        // Go through from 1 to prime-1 to see if test^j has been seen yet; if all numbers j = 1 to prime-1 for test^j are different then test is a primitive root
         for (long long j = 1; j < prime; j++)
         {
-            current = mod_big(i, j, prime);
+            current = mod_big(test, j, prime);
             if (std::find(seen.begin(), seen.end(), current) != seen.end())
             {
                 check = false;
@@ -72,26 +85,30 @@ int main()
         
         if (check == true)
         {
-            primitive_root = i;
+            primitive_root = test;
             break;
         }
         
         check = true;
     }
     
-    std::cout << prime << std::endl;
-    std::cout << primitive_root << std::endl;
+    std::cout << "The prime number is: " << prime << std::endl;
+    std::cout << "The primitive root for prime is: " << primitive_root << std::endl;
     
     long long XA = 0;
     long long XB = 0;
     long long YA = 0;
     long long YB = 0;
     
-    std::cout << "What would user A's power be which is less than " << prime << " : ";
+    std::cout << "What would user A's power be which is less than " << prime << ": ";
     std::cin >> XA;
     
-    std::cout << "What would user B's power be which is less than " << prime << " : ";
+    std::cout << "What would user B's power be which is less than " << prime << ": ";
     std::cin >> XB;
+    
+    /* Uncomment if we want random powers XA and XB
+    XA = rand() % prime;
+    XB = rand() % prime;    */
     
     // Calculate YA and YB so that we can calculate the keys KA and KB
     YA = mod_big(primitive_root, XA, prime);
@@ -109,8 +126,11 @@ int main()
     long long XM = 0;
     long long YM = 0;
     
-    std::cout << "What would user M's power be which is less than " << prime << " : ";
+    std::cout << "What would user M's power be which is less than " << prime << ": ";
     std::cin >> XM;
+    
+    /* Uncomment if we want random power for XM
+    XM = rand() % prime;    */
     
     YM = mod_big(primitive_root, XM, prime);
     
