@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 
+//Function for calculating the module of a base with a huge power with a recursive approach
 long long mod_big(long long base, long long power, int mod)
 {
     // If we reach power of 0 we know that we have base^0 which is 1 and 1 mod anything is 1
@@ -53,6 +54,9 @@ int main()
     
     long long test = 0;
     std::vector<int> primitive_tests;
+    // Push back 0 and 1 since they can't be primitive roots and checking them would potentially waste time
+    primitive_tests.push_back(0);
+    primitive_tests.push_back(1);
     //Gets a primitive root for the prime number
     while(primitive_root == 0)
     {
@@ -92,6 +96,7 @@ int main()
         check = true;
     }
     
+    //Prints out the prime number and the primitive root we are dealing with
     std::cout << "The prime number is: " << prime << std::endl;
     std::cout << "The primitive root for prime is: " << primitive_root << std::endl;
     
@@ -100,15 +105,17 @@ int main()
     long long YA = 0;
     long long YB = 0;
     
+    //Gets random number from 0 to prime-1 for XA and XB
+    XA = rand() % prime;
+    XB = rand() % prime;
+    
+    
+    /* Uncomment if we want to input powers for XA and XB
     std::cout << "What would user A's power be which is less than " << prime << ": ";
     std::cin >> XA;
-    
     std::cout << "What would user B's power be which is less than " << prime << ": ";
-    std::cin >> XB;
+    std::cin >> XB; */
     
-    /* Uncomment if we want random powers XA and XB
-    XA = rand() % prime;
-    XB = rand() % prime;    */
     
     // Calculate YA and YB so that we can calculate the keys KA and KB
     YA = mod_big(primitive_root, XA, prime);
@@ -118,7 +125,8 @@ int main()
     long long KA = mod_big(YB, XA, prime);
     long long KB = mod_big(YA, XB, prime);
     
-    std::cout << "Without Attack Key for A: " << KA << std::endl << "Key for B: " << KB << std::endl;
+    std::cout << "Without MitM Attack - Key for A: " << KA << std::endl << "Key for B: " << KB << std::endl;
+    
     
     //This section is for Problem 2 and simulates 2 attacks on Diffie Hellman
     
@@ -126,20 +134,24 @@ int main()
     long long XM = 0;
     long long YM = 0;
     
+    //Gets random number from 0 to prime-1 for XM
+    XM = rand() % prime;
+    
+    /* Uncomment if we want to input power for XM
     std::cout << "What would user M's power be which is less than " << prime << ": ";
-    std::cin >> XM;
+    std::cin >> XM; */
     
-    /* Uncomment if we want random power for XM
-    XM = rand() % prime;    */
-    
+    // Calculates YM
     YM = mod_big(primitive_root, XM, prime);
     
+    // Calculates the keys M, A, B with a MitM attack
     long long KM_A = mod_big(YA, XM, prime);
     long long KM_B = mod_big(YB, XM, prime);
     KA = mod_big(YM, XA, prime);
     KB = mod_big(YM, XB, prime);
     
-    std::cout << "With Attack Key for A: " << KA << std::endl << "M's Key with A: " << KM_A << std::endl << "Key for B: " << KB << std::endl << "M's Key with B: " << KM_B << std::endl;
+    
+    std::cout << "With MitM Attack - Key for A: " << KA << std::endl << "M's Key with A: " << KM_A << std::endl << "Key for B: " << KB << std::endl << "M's Key with B: " << KM_B << std::endl;
     
     
     // This is if we know what YA, YB, primitive_root, and the prime number are we can find what XA and XB are
@@ -147,7 +159,7 @@ int main()
     bool XB_check = false;
     
     // Goes through all possible powers until we find one that equals YA or YB and then we know that those are XA and XB respectively since a is a primitive root of prime
-    for (int i = 1; i < prime; i++)
+    for (int i = 0; i < prime; i++)
     {
         if (mod_big(primitive_root, i, prime) == YA)
         {
